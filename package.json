@@ -19,7 +19,7 @@
     "babel": "^4.7.16"
   },
   "scripts": {
-    "prepublish": "./node_modules/.bin/babel src --out-dir lib"
+    "postinstall": "./node_modules/.bin/babel src --out-dir lib"
   },
   "keywords": [
     "react",
