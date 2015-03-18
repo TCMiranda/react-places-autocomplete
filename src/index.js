@@ -153,7 +153,7 @@ class Input extends React.Component {
           key={suggest.placeId}
           suggest={suggest}
           isActive={isActive}
-          onSuggestSelect={this.handleSuggestSelect}
+          onSuggestSelect={this.handleSuggestSelect.bind(this)}
          />
       );
     });
