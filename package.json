@@ -1,0 +1,31 @@
+{
+  "name": "gmaps-places-autocomplete",
+  "version": "0.1.0",
+  "description": "A React autosuggest input for the Google Maps Places API.",
+  "main": "index.js",
+  "author": "Bodhi5 Inc <info@bodhi5.com>",
+  "homepage": "https://github.com/bh5-js/gmaps-places-autocomplete",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bh5-js/gmaps-places-autocomplete.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bh5-js/gmaps-places-autocomplete/issues"
+  },
+  "dependencies": {
+    "react": "^0.13.0"
+  },
+  "devDependencies": {
+    "babel": "^4.7.16"
+  },
+  "scripts": {
+    "prepublish": "./node_modules/.bin/babel src --out-dir lib"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "google",
+    "autosuggest",
+    "places"
+  ]
+}
