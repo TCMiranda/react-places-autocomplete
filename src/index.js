@@ -16,7 +16,7 @@ class Input extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!this.state.userInput.length) { return this.updateSuggets(); }
+    if (!this.state.userInput.length) { return this.updateSuggests(); }
 
     this.state.autocompleteService.getPlacePredictions({
       input: this.state.userInput,
