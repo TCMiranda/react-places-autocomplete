@@ -15,7 +15,7 @@ class Input extends React.Component {
     };
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  updateAutocomplete() {
     if (!this.state.userInput.length) { return this.updateSuggests(); }
 
     this.state.autocompleteService.getPlacePredictions({
@@ -27,7 +27,7 @@ class Input extends React.Component {
   }
 
   handleInputChange(e) {
-    this.setState({userInput: e.target.value});
+    this.setState({userInput: e.target.value}, () => this.updateAutocomplete());
   }
 
   handleInputFocus() {
@@ -173,7 +173,7 @@ class Input extends React.Component {
           onFocus={this.handleInputFocus.bind(this)}
           onBlur={this.handleInputBlur.bind(this)}
         />
-        <ul className={'geosuggest__suggests' + (this.state.isSuggestHidden ? 'geosuggest__suggest--hidden' : '')}>
+        <ul className={'geosuggest__suggests' + (this.state.isSuggestsHidden ? ' geosuggest__suggests--hidden' : '')}>
           {this.getSuggestItems()}
         </ul>
       </div>
