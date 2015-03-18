@@ -26,10 +26,9 @@ class Input extends React.Component {
 
   }
 
-  handleInputChange() {
-    let userInput = (React.findDOMNode(this.refs.geosuggestInput)).value;
-    this.setState({userInput: userInput});
-   }
+  handleInputChange(e) {
+    this.setState({userInput: e.target.value});
+  }
 
   handleInputFocus() {
     this.updateSuggests();
@@ -62,6 +61,26 @@ class Input extends React.Component {
         this.handleInputBlur();
         break;
     }
+  }
+
+  handleSuggestSelect(suggest) {
+    if (!suggest) {
+      suggest = {
+        label: this.state.userInput
+      };
+    }
+
+    this.setState({
+      isSuggestsHidden: true,
+      userInput: suggest.label
+    });
+
+    if (suggest.location) {
+      this.props.onSuggestSelect(suggest);
+      return;
+    }
+
+    this.geocodeSuggest(suggest);
   }
 
   updateSuggests(suggestsGoogle) {
@@ -108,27 +127,7 @@ class Input extends React.Component {
     this.setState({activeSuggest: newActiveSuggest});
   }
 
-  selectSuggest(suggest) {
-    if (!suggest) {
-      suggest = {
-        label: this.state.userInput
-      };
-    }
-
-    this.setState({
-      isSuggestsHidden: true,
-      userInput: suggest.label
-    });
-
-    if (suggest.location) {
-      this.props.onSuggestSelect(suggest);
-      return;
-    }
-
-    this.geocodeSuggest(suggest);
-  }
-
-  geocodeSuggest(suggest) {
+   geocodeSuggest(suggest) {
     this.state.geocoder.geocode({
       address: suggest.label
     }, (results, status) => {
@@ -154,7 +153,7 @@ class Input extends React.Component {
           key={suggest.placeId}
           suggest={suggest}
           isActive={isActive}
-          onSuggestSelect={this.selectSuggest}
+          onSuggestSelect={this.handleSuggestSelect}
          />
       );
     });
@@ -162,7 +161,7 @@ class Input extends React.Component {
 
   render() {
     return (
-      <div className="geosuggest" onClick={this.onClick.bind(this)}>
+      <div className="geosuggest">
         <input
           className="geosuggest__input"
           ref="geosuggestInput"
