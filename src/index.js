@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 import SuggestionItem from './item';
 import google from 'google';
@@ -11,37 +13,39 @@ class Input extends React.Component {
       activeSuggest: null,
       suggests: [],
       geocoder: new google.maps.Geocoder(),
-      autocompleteService: new google.maps.places.AutocompleteService()
+      autocompleteService: new google.maps.places.AutocompleteService(),
     };
   }
 
   updateAutocomplete() {
-    if (!this.state.userInput.length) { return this.updateSuggests(); }
+    if (!this.state.userInput.length) {
+      return this.updateSuggests();
+    }
 
     this.state.autocompleteService.getPlacePredictions({
       input: this.state.userInput,
       location: this.props.location || new google.maps.LatLng(0, 0),
-      radius: this.props.radius || 0
+      radius: this.props.radius || 0,
     }, (suggestions) => this.updateSuggests(suggestions));
 
   }
 
-  handleInputChange(e) {
+  handleInputChange = (e) => {
     this.setState({userInput: e.target.value}, () => this.updateAutocomplete());
   }
 
-  handleInputFocus() {
+  handleInputFocus = () => {
     this.updateSuggests();
     this.setState({isSuggestsHidden: false});
   }
 
-  handleInputBlur() {
+  handleInputBlur = () => {
     setTimeout(() => {
       this.setState({isSuggestsHidden: true});
     }, 100);
   }
 
-  handleInputKeyDown(event) {
+  handleInputKeyDown = (event) => {
     switch (event.which) {
       case 40: // DOWN
         event.preventDefault();
@@ -63,16 +67,16 @@ class Input extends React.Component {
     }
   }
 
-  handleSuggestSelect(suggest) {
+  handleSuggestSelect = (suggest) => {
     if (!suggest) {
       suggest = {
-        label: this.state.userInput
+        label: this.state.userInput,
       };
     }
 
     this.setState({
       isSuggestsHidden: true,
-      userInput: suggest.label
+      userInput: suggest.label,
     });
 
     if (suggest.location) {
@@ -87,21 +91,21 @@ class Input extends React.Component {
     let suggests = [];
     let regex = new RegExp(this.state.userInput, 'gim');
 
-    (this.props.fixtures||[]).forEach(suggest => {
+    (this.props.fixtures || []).forEach((suggest) => {
       if (suggest.label.match(regex)) {
         suggest.placeId = suggest.label;
         suggests.push(suggest);
       }
     });
 
-    (suggestsGoogle||[]).forEach( suggest => {
+    (suggestsGoogle || []).forEach((suggest) => {
       suggests.push({
         label: suggest.description,
-        placeId: suggest.place_id
+        placeId: suggest.place_id,
       });
     });
 
-    this.setState({suggests: suggests});
+    this.setState({suggests});
   }
 
   activateSuggest(direction) {
@@ -129,7 +133,7 @@ class Input extends React.Component {
 
    geocodeSuggest(suggest) {
     this.state.geocoder.geocode({
-      address: suggest.label
+      address: suggest.label,
     }, (results, status) => {
 
       if (status !== google.maps.GeocoderStatus.OK) { return; }
@@ -137,7 +141,7 @@ class Input extends React.Component {
       let location = results[0].geometry.location;
       suggest.location = {
         lat: location.lat(),
-        lng: location.lng()
+        lng: location.lng(),
       };
 
       this.handleSuggestSelect(suggest);
@@ -145,7 +149,7 @@ class Input extends React.Component {
   }
 
   getSuggestItems(){
-    return this.state.suggests.map( suggest => {
+    return this.state.suggests.map((suggest) => {
       let isActive = (this.state.activeSuggest && suggest.placeId === this.state.activeSuggest.placeId);
 
       return (
@@ -153,7 +157,7 @@ class Input extends React.Component {
           key={suggest.placeId}
           suggest={suggest}
           isActive={isActive}
-          onSuggestSelect={this.handleSuggestSelect.bind(this)}
+          onSuggestSelect={this.handleSuggestSelect}
          />
       );
     });
@@ -168,10 +172,10 @@ class Input extends React.Component {
           type="text"
           value={this.state.userInput}
           placeholder={this.props.placeholder || ''}
-          onKeyDown={this.handleInputKeyDown.bind(this)}
-          onChange={this.handleInputChange.bind(this)}
-          onFocus={this.handleInputFocus.bind(this)}
-          onBlur={this.handleInputBlur.bind(this)}
+          onKeyDown={this.handleInputKeyDown}
+          onChange={this.handleInputChange}
+          onFocus={this.handleInputFocus}
+          onBlur={this.handleInputBlur}
         />
         <ul className={'geosuggest__suggests' + (this.state.isSuggestsHidden ? ' geosuggest__suggests--hidden' : '')}>
           {this.getSuggestItems()}

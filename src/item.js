@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 
 class Item extends React.Component {
@@ -5,7 +7,7 @@ class Item extends React.Component {
     super(props);
   }
 
-  handleClick(event) {
+  handleClick = (event) => {
     event.preventDefault();
     if (this.props.onSuggestSelect) {
       this.props.onSuggestSelect(this.props.suggest);
@@ -14,7 +16,7 @@ class Item extends React.Component {
 
   render() {
     return (
-      <li className={'geosuggest-item' + (!!this.props.isActive ? ' geosuggest-item--active' : '')} onClick={this.handleClick.bind(this)}>
+      <li className={'geosuggest-item' + (this.props.isActive ? ' geosuggest-item--active' : '')} onClick={this.handleClick}>
         {this.props.suggest.label}
       </li>
     );
@@ -22,3 +24,4 @@ class Item extends React.Component {
 }
 
 export default Item;
+
