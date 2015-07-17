@@ -1,9 +1,9 @@
 {
-  "name": "gmaps-places-autocomplete",
+  "name": "react-places-autocomplete",
   "version": "0.1.7",
   "description": "A React autosuggest input for the Google Maps Places API.",
   "main": "index.js",
-  "author": "Bodhi5 Inc <info@bodhi5.com>",
+  "author": "Tiago de Carvalho Miranda",
   "scripts": {
     "prepublish": "./node_modules/.bin/babel --stage=0 src/ --out-dir lib/",
     "lint": "./node_modules/.bin/eslint src/"
